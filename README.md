@@ -2,7 +2,6 @@ In this project realised compiler for language for Turing machine simulator.
 
 ### The syntax of the language:
 
-* 
 \<program\> = \<symbol list\> \<statement\>
   
 \<statement\> =  \<block-statement\> | \<if-statement\> | \<if_else-statement\> | \<ifnot-statement\> | \<if-statement\> |  \<while-statement\> | \<do_while-statement\>|
