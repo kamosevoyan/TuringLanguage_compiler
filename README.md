@@ -2,8 +2,10 @@
 
 ### The syntax of the language:
 
-\<program\> = \<symbol list\> \<statement\>
-  
+\<program\> = \<symbol list\> \<main-statement\>
+
+\<main-statement\> = \<statement\>
+
 \<statement\> =  \<block-statement\> | \<if-statement\> | \<if_else-statement\> | \<ifnot-statement\> | \<if-statement\> |  \<while-statement\> | \<do_while-statement\>|
             \<repeat_until-statement\> |  \<write-statement\> |  \<left-statement\> |  \<right-statement\> |  \<exit-statement\> |  \<error-statement\>
             \<continue-statement\> | \<break-statement\>
