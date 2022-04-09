@@ -26,11 +26,11 @@
               
 \<write-statement\> = 'write' \<symbol\> ';'
               
-\<left-statement\> = 'left'';'
+\<left-statement\> = 'left' ';'
               
-\<right-statement\> = 'right'';'
+\<right-statement\> = 'right' ';'
               
-\<exit-statement\> = 'exit'';'
+\<exit-statement\> = 'exit' ';'
               
 \<error-statement\> = 'error' ';'
               
