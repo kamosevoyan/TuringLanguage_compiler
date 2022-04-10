@@ -1,5 +1,4 @@
 #include "TuringLanguage.h"
-#define DEBUG
 
 
 int main(int argc, char* argv[])
