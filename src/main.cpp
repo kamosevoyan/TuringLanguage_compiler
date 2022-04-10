@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
 {
 	try
 	{
-		ux_handler(argc, argv);		
+		ui_handler(argc, argv);		
 	}
 	catch(const std::string report)
 	{

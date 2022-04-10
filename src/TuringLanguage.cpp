@@ -13,7 +13,7 @@ std::string strip(const std::string& input)
 	return output;
 }
 
-void ux_handler(int argc, char* argv[])
+void ui_handler(int argc, char* argv[])
 {
 	if (argc < 3)
 	{

@@ -279,5 +279,5 @@ public:
 
 
 void print(Node* , int  = 0);
-void ux_handler(int, char*[]);
+void ui_handler(int, char*[]);
 #endif
