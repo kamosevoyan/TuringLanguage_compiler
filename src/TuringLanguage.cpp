@@ -30,7 +30,14 @@ void ui_handler(int argc, char* argv[])
 	
 	if (file.fail())
 	{
-		throw std::string("\033[31mError: invalid file name\n\033[0m");
+		throw std::string("\033[31mError: invalid input file name or directory\n\033[0m");
+	}
+	
+	std::ofstream output_file_name(argv[2]);
+
+	if (output_file_name.fail())
+	{
+		throw std::string("\033[31mError: invalid output file name or directory\n\033[0m");
 	}
 	
 	std::stringstream sstream;
@@ -41,7 +48,6 @@ void ui_handler(int argc, char* argv[])
 
 	std::string source_code =  compiler.compile();
 	
-	std::ofstream output_file_name(argv[2]);
 	output_file_name << source_code;
 	output_file_name.close();
 }
