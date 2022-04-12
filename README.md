@@ -52,9 +52,6 @@ The statements of **if statements** are executed only if the symbol in the curre
 * if-else statement <br/>
 The **if branch statements** of **if-else statements** are executed when the symbol in the current cell of the tape is available in symbol list, otherwhies the **else branch statements** are exequted.
 
-* ifnot statement <br/>
-The statements of **ifnot statements** are executed only if the symbol in the current cell of the tape is not available in symbol list.
-
 * while statement <br/>
 The statements of **while statements** are executed while the symbol in the current cell of the tape is available in symbol list.
 
