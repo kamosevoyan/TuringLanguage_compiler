@@ -36,7 +36,7 @@
 
 \<break-statement\> := 'break' ';'
               
-\<symbol list\> := <not>? '(' \<symbol\> ( \<comma\> \<symbol\> )* ')'
+\<symbol list\> := \<not\> '(' \<symbol\> ( \<comma\> \<symbol\> )* ')' | '(' \<symbol\> ( \<comma\> \<symbol\> )* ')'
 
 \<symbol\> =  ASCII printable character
   
