@@ -13,7 +13,7 @@ std::string strip(const std::string&);
 
 
 enum class TYPE {MAIN, REPEAT_UNTIL, DO_WHILE, BLOCK, IF, IFNOT, IF_ELSE, 
-								WHILE, LEFT, RIGHT, WRITE, EXIT, ERROR, CONTINUE, BREAK, SYMBOL_LIST, NONE};
+								WHILE, LEFT, RIGHT, WRITE, EXIT, ERROR, CONTINUE, BREAK, SYMBOL_LIST};
 
 class Lexer
 {	
@@ -22,7 +22,7 @@ class Lexer
 		
 	private:
 		enum class KEYWORDS  {MAIN, REPEAT, UNTIL, DO, WHILE, IF, IFNOT, ELSE, WRITE, LEFT, RIGHT, EXIT, 
-														ERROR, L_BR, R_BR, L_PAR, R_PAR, SEMICOLON,  SYMBOL, COMMA, END, CONTINUE, BREAK};
+														ERROR, L_BR, R_BR, L_PAR, R_PAR, SEMICOLON,  SYMBOL, COMMA, END, CONTINUE, BREAK, NOT};
 				
 		KEYWORDS keyword;
 		std::string value;
@@ -61,11 +61,13 @@ class SymbolsNode : public Node
 {
 	friend class Parser;
 	friend class Compiler;
-	friend void print(Node*, int);	
-	
+	friend void print(Node*, int);		
+		
 	std::string symbols = "";
+	bool has_not;
 	
 	public:
+	
 		SymbolsNode(TYPE);
 		virtual ~SymbolsNode();
 };
@@ -73,13 +75,13 @@ class SymbolsNode : public Node
 class PrimaryNode : public Node 
 {
 	public:
+	
 		PrimaryNode(TYPE);
 		virtual ~PrimaryNode();
 };
 
 class WriteNode : public PrimaryNode
 {
-
 		friend class Parser;
 		friend class Compiler;
 		friend void print(Node*, int);	
@@ -101,6 +103,7 @@ class FlowControlNode : public Node
 		Node* owner_loop = nullptr;
 		
 	public:		
+	
 		FlowControlNode(TYPE);		
 		virtual ~FlowControlNode();
 };
@@ -149,16 +152,6 @@ protected:
 	
 		IfElseNode(TYPE);		
 		virtual ~IfElseNode();	
-};
-
-class IfNotNode : public StatementNode 
-{
-	public:
-		Node* statements;
-		
-		
-		IfNotNode(TYPE);
-		virtual ~IfNotNode();
 };
 
 class LoopNode : public StatementNode

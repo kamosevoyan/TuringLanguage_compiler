@@ -1,6 +1,6 @@
 #include "TuringLanguage.h"
-//#define DEBUG
-				
+#define DEBUG
+			
 std::string strip(const std::string& input)
 {
 	std::string output(input);
@@ -59,7 +59,6 @@ Lexer::Lexer()
 	this->key_map["repeat"] = KEYWORDS::REPEAT;			
 	this->key_map["until"] = KEYWORDS::UNTIL;
 	this->key_map["do"] = KEYWORDS::DO;			
-	this->key_map["ifnot"] = KEYWORDS::IFNOT;
 	this->key_map["if"] = KEYWORDS::IF;
 	this->key_map["else"] = KEYWORDS::ELSE;
 	this->key_map["write"] = KEYWORDS::WRITE;
@@ -67,8 +66,8 @@ Lexer::Lexer()
 	this->key_map["right"] = KEYWORDS::RIGHT;
 	this->key_map["exit"] = KEYWORDS::EXIT;
 	this->key_map["error"] = KEYWORDS::ERROR;
-	
-	
+	this->key_map["not"] = KEYWORDS::NOT;
+		
 	this->key_map["continue"] = KEYWORDS::CONTINUE;
 	this->key_map["break"] = KEYWORDS::BREAK;			
 	
@@ -239,20 +238,7 @@ IfElseNode::~IfElseNode()
 #endif			
 	delete this->if_statements;
 	delete this->else_statements;
-}				
-		
-IfNotNode::IfNotNode(TYPE type):StatementNode(type)
-{
-	
-}
-
-IfNotNode::~IfNotNode()
-{
-#ifdef DEBUG						
-	std::cout << "IfNotnode destructor called\n";
-#endif			
-	delete this->statements;
-}			
+}					
 
 LoopNode::LoopNode(TYPE type):StatementNode(type)
 {
@@ -490,31 +476,7 @@ Node* Parser::parse_statement(Node* root) &
 		std::cout << "if statement end\n";
 #endif								
 		return first_node;
-	}
-	else
-	if (this->offset_token(0) == Lexer::KEYWORDS::IFNOT)
-	{
-		IfNode* node = new IfNode(TYPE::IFNOT);
-		node->root = root;
-
-#ifdef DEBUG											
-		std::cout << "Ifnot statement begin\n";
-#endif
-		
-		SymbolsNode symnode = parse_symbols_statement();
-		
-		this->next_token();				
-		node0 = parse_statement(node);
-										
-		node->statements = node0;								
-		node->symbols = symnode;
-
-#ifdef DEBUG											
-		std::cout << "ifnot statement end\n";
-#endif				
-		
-		return node;
-	}			
+	}		
 	else
 	if (this->offset_token(0)  == Lexer::KEYWORDS::WHILE)
 	{
@@ -829,6 +791,7 @@ SymbolsNode Parser::parse_symbols_statement() &
 {			
 	SymbolsNode node = TYPE::SYMBOL_LIST;
 	bool isGlobal;
+	bool has_not;
 	
 	if (this->globalSymbols.symbols.length() == 0)
 	{
@@ -838,6 +801,24 @@ SymbolsNode Parser::parse_symbols_statement() &
 	{
 		isGlobal = false;
 	}	
+	
+	//this->next_token();
+	
+	if (this->offset_token(1) == Lexer::KEYWORDS::NOT)
+	{
+		this->next_token();
+		
+		if (isGlobal)
+		{
+			throw std::string("\033[31mMain statement should not have not attribute.\n\033[0m");
+		}
+		has_not = true;
+		std::cout << "hasss nooot \n";
+	}
+	else
+	{
+		has_not = false;
+	}
 	
 	this->next_token();
 	
@@ -909,6 +890,8 @@ SymbolsNode Parser::parse_symbols_statement() &
 		{
 			throw std::string("\033[31mExpected symbol after comma \n\033[0m");
 		}
+		
+		node.has_not = has_not;
 		
 		return node;
 		
@@ -1088,32 +1071,6 @@ void print(Node* node, int shift)
 				std::cout << " ";
 		}				
 		std::cout << "}";		
-
-	}
-	else
-	if (node->type == TYPE::IFNOT)
-	{
-		std::cout << "ifnot\n";
-		for (int i = 0; i < shift ; ++i)
-		{
-				std::cout << " ";
-		}
-		
-		std::cout << "{\n";
-		
-		for (int i = 0; i < shift + 1; ++i)
-		{
-				std::cout << " ";
-		}
-
-		print(((IfNotNode*)node)->statements, shift + 1);
-		
-		std::cout << "\n";
-		for (int i = 0; i < shift ; ++i)
-		{
-				std::cout << " ";
-		}				
-		std::cout << "}";
 
 	}
 	else
@@ -1351,17 +1308,20 @@ void Compiler::compile_node(Node* node, std::vector<std::string>& lines, size_t&
 		break;
 		
 		case	TYPE::IF:
-		
+		{
 				++state_number;
 				old_state_number = state_number;
 				
 				lines.push_back("");
 				curent_line = lines.size() - 1;
+				bool has_not = static_cast<IfNode*>(node)->symbols.has_not;
 				
 				compile_node(static_cast<IfNode*>(node)->statements, lines, state_number, globalSymbols);
 				
+				if (has_not == true)
+				std::cout << "if has not \n";
 				
-				if (  static_cast<IfNode*>(node)->symbols.symbols.find(globalSymbols[0]) != std::string::npos)
+				if (  (has_not) ^ (static_cast<IfNode*>(node)->symbols.symbols.find(globalSymbols[0]) != std::string::npos) )
 				{
 					temp += globalSymbols.substr(0,1) + ",q" + std::to_string(old_state_number ) + ",@";
 				}
@@ -1372,7 +1332,7 @@ void Compiler::compile_node(Node* node, std::vector<std::string>& lines, size_t&
 				
 				for (int i = 1; i < globalSymbols.length(); ++i)
 				{
-					if (  static_cast<IfNode*>(node)->symbols.symbols.find(globalSymbols[i]) != std::string::npos)
+					if (  (has_not)  ^ ( static_cast<IfNode*>(node)->symbols.symbols.find(globalSymbols[i]) != std::string::npos) )
 					{
 						temp += std::string("\t|\t") + globalSymbols.substr(i,1)+ ",q" + std::to_string(old_state_number ) + ",@";
 					}
@@ -1383,52 +1343,17 @@ void Compiler::compile_node(Node* node, std::vector<std::string>& lines, size_t&
 				}
 				temp += "\n";							
 				lines[curent_line] = temp;
-				
-		break;
-		
-		case	TYPE::IFNOT:
-		
-				++state_number;
-				old_state_number = state_number;
-				
-				lines.push_back("");
-				curent_line = lines.size() - 1;
-				
-				compile_node(static_cast<IfNotNode*>(node)->statements, lines, state_number, globalSymbols);
-				
-				
-				if (  static_cast<IfNotNode*>(node)->symbols.symbols.find(globalSymbols[0]) == std::string::npos)
-				{
-					temp += globalSymbols.substr(0,1) + ",q" + std::to_string(old_state_number ) + ",@";
-				}
-				else
-				{
-					temp += globalSymbols.substr(0,1) + ",q" + std::to_string(state_number ) + ",@";
-				}	
-				
-				for (int i = 1; i < globalSymbols.length(); ++i)
-				{
-					if (  static_cast<IfNotNode*>(node)->symbols.symbols.find(globalSymbols[i]) == std::string::npos)
-					{
-						temp += std::string("\t|\t") + globalSymbols.substr(i,1)+ ",q" + std::to_string(old_state_number ) + ",@";
-					}
-					else
-					{
-						temp += std::string("\t|\t") + globalSymbols.substr(i,1) + ",q" + std::to_string(state_number ) + ",@";
-					}	
-				}
-				temp += "\n";							
-				lines[curent_line] = temp;
-				
-		break;				
+		}	
+		break;	
 		
 		case	TYPE::IF_ELSE:
-		
-			   {++state_number;
+		{
+			   ++state_number;
 				old_state_number = state_number;
 				
 				lines.push_back("");
 				curent_line = lines.size() - 1;
+				bool has_not = static_cast<IfElseNode*>(node)->symbols.has_not;				
 				
 				compile_node(((IfElseNode*)node)->if_statements, lines, state_number, globalSymbols);
 				lines.push_back("");
@@ -1441,7 +1366,7 @@ void Compiler::compile_node(Node* node, std::vector<std::string>& lines, size_t&
 				compile_node(((IfElseNode*)node)->else_statements, lines, state_number, globalSymbols);
 				
 				
-				if ( static_cast<IfElseNode*>(node)->symbols.symbols.find(globalSymbols[0]) != std::string::npos)
+				if ( has_not ^ (static_cast<IfElseNode*>(node)->symbols.symbols.find(globalSymbols[0]) != std::string::npos))
 				{
 					temp += globalSymbols.substr(0,1) + ",q" + std::to_string(old_state_number ) + ",@";
 				}
@@ -1452,7 +1377,7 @@ void Compiler::compile_node(Node* node, std::vector<std::string>& lines, size_t&
 				
 				for (int i = 1; i < globalSymbols.length(); ++i)
 				{
-					if (  static_cast<IfElseNode*>(node)->symbols.symbols.find(globalSymbols[i]) != std::string::npos)
+					if ( has_not ^ (static_cast<IfElseNode*>(node)->symbols.symbols.find(globalSymbols[i]) != std::string::npos))
 					{
 						temp += std::string("\t|\t") + globalSymbols.substr(i,1)+ ",q" + std::to_string(old_state_number ) + ",@";
 					}
@@ -1474,22 +1399,24 @@ void Compiler::compile_node(Node* node, std::vector<std::string>& lines, size_t&
 				}
 				
 				temp += "\n";						
-				lines[else_current_line] = temp;}		
+				lines[else_current_line] = temp;
 				
+		}
 		break;
 		
 		case	TYPE::WHILE:			
-		
+		{
 				++state_number;
 				old_state_number = state_number;
 				
 				lines.push_back("");
 				curent_line = lines.size() - 1;
+				bool has_not = static_cast<IfElseNode*>(node)->symbols.has_not;								
 				
 				compile_node(((WhileNode*)node)->statements, lines, state_number, globalSymbols);
 				
 				
-				if (  static_cast<WhileNode*>(node)->symbols.symbols.find(globalSymbols[0]) != std::string::npos)
+				if ( has_not ^  (static_cast<WhileNode*>(node)->symbols.symbols.find(globalSymbols[0]) != std::string::npos))
 				{
 					temp += globalSymbols.substr(0,1) + ",q" + std::to_string(old_state_number ) + ",@";
 				}
@@ -1500,7 +1427,7 @@ void Compiler::compile_node(Node* node, std::vector<std::string>& lines, size_t&
 				
 				for (int i = 1; i < globalSymbols.length(); ++i)
 				{
-					if (  static_cast<WhileNode*>(node)->symbols.symbols.find(globalSymbols[i]) != std::string::npos)
+					if (has_not ^ (static_cast<WhileNode*>(node)->symbols.symbols.find(globalSymbols[i]) != std::string::npos))
 					{
 						temp += std::string("\t|\t") + globalSymbols.substr(i,1)+ ",q" + std::to_string(old_state_number ) + ",@";
 					}
@@ -1531,17 +1458,19 @@ void Compiler::compile_node(Node* node, std::vector<std::string>& lines, size_t&
 				static_cast<WhileNode*>(node)->break_state = state_number;				
 
 				put_flow_controls(node, lines, state_number, globalSymbols);
-				
+		}		
 		break;				
 						
 		case	TYPE::DO_WHILE:
-		
+		{
 				old_state_number = state_number;							
+				bool has_not = static_cast<IfElseNode*>(node)->symbols.has_not;				
+				
 				compile_node(static_cast<DoWhileNode*>(node)->statements, lines, state_number, globalSymbols);
 				
 				++state_number;										
 				
-				if (  static_cast<DoWhileNode*>(node)->symbols.symbols.find(globalSymbols[0]) != std::string::npos)
+				if (has_not ^  (static_cast<DoWhileNode*>(node)->symbols.symbols.find(globalSymbols[0]) != std::string::npos))
 				{
 					temp += globalSymbols.substr(0,1) + ",q" + std::to_string(old_state_number) + ",@";
 				}
@@ -1552,7 +1481,7 @@ void Compiler::compile_node(Node* node, std::vector<std::string>& lines, size_t&
 				
 				for (int i = 1; i < globalSymbols.length(); ++i)
 				{
-					if (  static_cast<DoWhileNode*>(node)->symbols.symbols.find(globalSymbols[i]) != std::string::npos)
+					if (has_not ^ (static_cast<DoWhileNode*>(node)->symbols.symbols.find(globalSymbols[i]) != std::string::npos))
 					{
 						temp += std::string("\t|\t") + globalSymbols.substr(i,1)+ ",q" + std::to_string(old_state_number) + ",@";
 					}
@@ -1570,17 +1499,19 @@ void Compiler::compile_node(Node* node, std::vector<std::string>& lines, size_t&
 
 				put_flow_controls(node, lines, state_number, globalSymbols);							
 				
-									
+		}						
 		break;					
 		
 		case	TYPE::REPEAT_UNTIL:
-		
-				old_state_number = state_number;							
+		{
+				old_state_number = state_number;		
+				bool has_not = static_cast<IfElseNode*>(node)->symbols.has_not;				
+				
 				compile_node(static_cast<RepeatUntilNode*>(node)->statements, lines, state_number, globalSymbols);
 				
 				++state_number;										
 				
-				if (  static_cast<RepeatUntilNode*>(node)->symbols.symbols.find(globalSymbols[0]) == std::string::npos)
+				if (has_not ^  (static_cast<RepeatUntilNode*>(node)->symbols.symbols.find(globalSymbols[0]) == std::string::npos))
 				{
 					temp += globalSymbols.substr(0,1) + ",q" + std::to_string(old_state_number) + ",@";
 				}
@@ -1608,7 +1539,7 @@ void Compiler::compile_node(Node* node, std::vector<std::string>& lines, size_t&
 				static_cast<RepeatUntilNode*>(node)->break_state = state_number;				
 
 				put_flow_controls(node, lines, state_number, globalSymbols);									
-				
+		}	
 		break;
 										
 		default:
