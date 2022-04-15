@@ -14,8 +14,6 @@
 
 \<if_else-statement\> := 'if' \<symbol list\> \<statement\> 'else' \<statement\>
               
-\<ifnot-statement\> := 'ifnot' \<symbol list\>  \<statement\>
-              
 \<while-statement\> := 'while' \<symbol list\> \<statement\>
 
 \<do_whlie-statement\> := 'do' \<statement\> 'while' \<symbol list\> ';'
