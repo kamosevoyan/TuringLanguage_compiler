@@ -45,20 +45,20 @@
 ## Description of statements.
 
 * if statement <br/>
-The statements of **if statements** are executed only if the symbol in the current cell of the tape is available in symbol list.
+The statements of **if statement** are executed only if the symbol in the current cell of the tape is available in symbol list.
 
 * if-else statement <br/>
-The **if branch statements** of **if-else statements** are executed when the symbol in the current cell of the tape is available in symbol list, otherwhies the **else branch statements** are exequted.
+The **if branch statements** of **if-else statement** are executed when the symbol in the current cell of the tape is available in symbol list, otherwhies the **else branch statements** are exequted.
 
 * while statement <br/>
-The statements of **while statements** are executed while the symbol in the current cell of the tape is available in symbol list.
+The statements of **while statement** are executed while the symbol in the current cell of the tape is available in symbol list.
 
 * do_while statement <br/>
-The statements of **do_while statements** are executed while the symbol in the current cell of the tape is available in symbol list.
+The statements of **do_while statement** are executed while the symbol in the current cell of the tape is available in symbol list.
 In contrast of **while statement**, the statements are eqequted at least once.
 
 * repeat_until statement <br/>
-The statements of **repeat_until statements** are executed until the symbol in the current cell of the tape is available in symbol list.
+The statements of **repeat_until statement** are executed until the symbol in the current cell of the tape is available in symbol list.
 
 * write statement <br/>
 Writes the symbol in the currect cell of the tape.
