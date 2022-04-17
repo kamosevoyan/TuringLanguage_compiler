@@ -1,0 +1,7 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/kamo/github/TuringLanguage_compiler'
+g++ -c src/TuringLanguage.cpp -o obj/TuringLanguage.o
+g++ -c src/main.cpp -o obj/main.o
+g++  ./obj/TuringLanguage.o  ./obj/main.o -o TuringLanguage
+make: Leaving directory '/home/kamo/github/TuringLanguage_compiler'
+ 

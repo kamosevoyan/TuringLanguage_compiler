@@ -1,5 +1,12 @@
-main (_,0,1)
+global_symbols  (_,0,1,2,$)
+
+function foo()
 {
-	while not (0)
-		right;
+	left;
+}
+
+main()
+{
+	left;
+	left;
 }
