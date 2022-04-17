@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 	{
 		ui_handler(argc, argv);		
 	}
-	catch(const std::string report)
+	catch(const std::string& report)
 	{
 		std::cerr << report;
 		return 1;
