@@ -115,6 +115,11 @@ void Parser::get_global_symbols() &
 	}
 	
 	SymbolsNode node = parse_symbols_statement();
+
+    if (node.symbols.find("_") == std::string::npos)
+    {
+        throw std::string("\033[31mError: global symbols should contain empty '_' symbol.\n\033[0m");
+    }
 	
 	this->globalSymbols = node;
 }
