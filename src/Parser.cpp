@@ -515,7 +515,6 @@ SymbolsNode Parser::parse_symbols_statement() &
 			throw std::string("\033[31mMain statement should not have not attribute.\n\033[0m");
 		}
 		has_not = true;
-		std::cout << "hasss nooot \n";
 	}
 	else
 	{
