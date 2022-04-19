@@ -2,6 +2,8 @@ global_symbols (_,0,1,*,$,#,%,a,x,&)
 
 main()
 {
+
+
 	if not(1)
 	{
 		error;
@@ -15,6 +17,7 @@ main()
 	}
 	else
 	{
+	/* if number is 0, error*/
 		error;
 	}
 	
@@ -33,6 +36,8 @@ main()
 		
 		write(0);
 		exit;
+		
+		/* if number is 1, just return 0*/
 	}
 	
 	if (_)
@@ -46,6 +51,7 @@ main()
 		
 		write(1);
 		exit;
+		/* if number is 2, just return 0*/
 	}
 
 	while(1)

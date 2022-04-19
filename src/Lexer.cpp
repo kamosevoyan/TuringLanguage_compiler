@@ -31,8 +31,6 @@ Lexer::Lexer()
 	this->key_map["function"] = KEYWORDS::FUNCTION;
 	
 	this->key_map["global_symbols"] = KEYWORDS::GLOBAL_SYMBOLS;
-	
-
 }
 		
 void Lexer::setStream(const std::stringstream& sstream)&
@@ -53,7 +51,9 @@ void Lexer::correctStream()&
 	temp = std::regex_replace(temp, std::regex("\\}"), " } ");
 	temp = std::regex_replace(temp, std::regex(","), " , ");
 	temp = std::regex_replace(temp, std::regex(";"), " ; ");
-	
+
+	//removing comments
+	temp = std::regex_replace(temp, std::regex("/\\*.*\\*.*"), "");
 	
 	// Make plain the entire text 
 	//temp = std::regex_replace(temp, std::regex("\\n"), "  ");
