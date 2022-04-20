@@ -52,13 +52,15 @@ void Lexer::correctStream()&
 	temp = std::regex_replace(temp, std::regex(","), " , ");
 	temp = std::regex_replace(temp, std::regex(";"), " ; ");
 
-	//removing comments
-	temp = std::regex_replace(temp, std::regex("/\\*.*\\*.*"), "");
-	
 	// Make plain the entire text 
-	//temp = std::regex_replace(temp, std::regex("\\n"), "  ");
-	temp = std::regex_replace(temp, std::regex("\\r"), "  ");
-	temp = std::regex_replace(temp, std::regex("\\t"), "  ");
+	// temp = std::regex_replace(temp, std::regex("\\n\\r"), "  ");
+	// temp = std::regex_replace(temp, std::regex("\\r"), "  ");
+	// temp = std::regex_replace(temp, std::regex("\\t"), "  ");
+	//removing comments
+	temp = std::regex_replace(temp, std::regex(R"(\/\*[\s\S]*\*\/)"), " ");
+	
+	
+	
 	
 	this->sstream.str(temp);
 }
