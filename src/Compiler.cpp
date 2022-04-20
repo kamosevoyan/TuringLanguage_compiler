@@ -165,9 +165,7 @@ void Compiler::compile_node(Node* node, std::vector<std::string>& lines, size_t&
 				bool has_not = static_cast<IfNode*>(node)->symbols.has_not;
 				
 				compile_node(static_cast<IfNode*>(node)->statements, lines, state_number, globalSymbols);
-				
-				if (has_not == true)
-				
+								
 				if (  (has_not) ^ (static_cast<IfNode*>(node)->symbols.symbols.find(globalSymbols[0]) != std::string::npos) )
 				{
 					temp += globalSymbols.substr(0,1) + ",q" + std::to_string(old_state_number ) + ",@";
