@@ -6,7 +6,7 @@
 
 \<main-statement\> := \<statement\>
 
-\<statement\> :=  \<block-statement\> | \<if-statement\> | \<if_else-statement\> | \<while-statement\> | \<do_while-statement\>| \<repeat_until-statement\> | \<write-statement\> | \<left-statement\> | \<right-statement\> | \<exit-statement\> | \<error-statement\> | \<continue-statement\> | \<break-statement\>
+\<statement\> :=  \<block-statement\> | \<if-statement\> | \<if_else-statement\> | \<while-statement\> | \<do_while-statement\>| \<repeat_until-statement\> | \<write-statement\> | \<left-statement\> | \<right-statement\> | \<exit-statement\> | \<error-statement\> | \<continue-statement\> | \<break-statement\> | \<switch-statement\>
               
 \<block-statement\> := '{' \<statement\>+ '}'
   
@@ -33,6 +33,12 @@
 \<continue-statement\> := 'cointinue' ';'
 
 \<break-statement\> := 'break' ';'
+
+\switch-statement\> ::= 'switch' '()' \<case-statements\>
+
+\<case-statements\> ::= \<case-statement\>+
+
+\<case-statement\> := 'case' '(' \<symbol\> ')' \<statement\>
               
 \<symbol list\> := \<not\> '(' \<symbol\> ( \<comma\> \<symbol\> )* ')' | '(' \<symbol\> ( \<comma\> \<symbol\> )* ')'
 
