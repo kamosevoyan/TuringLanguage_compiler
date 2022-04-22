@@ -1,8 +1,9 @@
 #include "Lexer.h"
 
+#include <iostream>
 
 Lexer::Lexer()
-{
+{    
 	this->key_map["main"] = KEYWORDS::MAIN;
 	this->key_map["while"] = KEYWORDS::WHILE;
 	this->key_map["repeat"] = KEYWORDS::REPEAT;			
@@ -25,12 +26,16 @@ Lexer::Lexer()
 	this->key_map["("] = KEYWORDS::L_PAR;
 	this->key_map[")"] = KEYWORDS::R_PAR;				
 	this->key_map[";"] = KEYWORDS::SEMICOLON;	
+	this->key_map[":"] = KEYWORDS::COLON;	
 	this->key_map[","] = KEYWORDS::COMMA;
-	
-	
+	  	 
 	this->key_map["function"] = KEYWORDS::FUNCTION;
 	
 	this->key_map["global_symbols"] = KEYWORDS::GLOBAL_SYMBOLS;
+	this->key_map["switch"] = KEYWORDS::SWITCH;
+	this->key_map["case"] = KEYWORDS::CASE;
+	this->key_map["default"] = KEYWORDS::DEFAULT;
+   
 }
 		
 void Lexer::setStream(const std::stringstream& sstream)&
@@ -51,17 +56,14 @@ void Lexer::correctStream()&
 	temp = std::regex_replace(temp, std::regex("\\}"), " } ");
 	temp = std::regex_replace(temp, std::regex(","), " , ");
 	temp = std::regex_replace(temp, std::regex(";"), " ; ");
+	temp = std::regex_replace(temp, std::regex(":"), " : ");
 
-	// Make plain the entire text 
-	// temp = std::regex_replace(temp, std::regex("\\n\\r"), "  ");
-	// temp = std::regex_replace(temp, std::regex("\\r"), "  ");
-	// temp = std::regex_replace(temp, std::regex("\\t"), "  ");
-	//removing comments
-	temp = std::regex_replace(temp, std::regex(R"(\/\*[\s\S]*\*\/)"), " ");
+	//removing single line comments
+	temp = std::regex_replace(temp, std::regex(R"(\/\/.*\n)"), " ");
 	
-	
-	
-	
+	//removing multi line comments
+	temp = std::regex_replace(temp, std::regex(R"(\/\*[^(?:\/\*)]*\*\/)"), " ");
+		
 	this->sstream.str(temp);
 }
 

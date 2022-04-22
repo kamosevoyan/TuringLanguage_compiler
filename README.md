@@ -80,6 +80,8 @@ These statements are used as flow controls in **while**, **do_while** and **repe
 <br/> If these statements aren't contained in any of loops given above, the parser trows an exception.
 
 ## The compiler pareses program using tree based algorithm.
+
+In fu
                             
               
 

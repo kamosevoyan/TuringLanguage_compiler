@@ -1,8 +1,8 @@
 global_symbols (_,0,1,2,3,4,5,6,7,8,9,*,$,#,%,a,x,&)
-
+  
 main()
 {
-
+	// left;
 	if not (1,2,3,4,5,6,7,8,9)
 		error;
 		
@@ -11,8 +11,10 @@ main()
 	
 	write (*);
 	
-	/* decimal to unary begin*/
-	while not (_)
+	right;
+	
+	/* decimal to binary begin*/
+	while not (#)
 	{	
 		while not (*)
 			left;
@@ -23,60 +25,35 @@ main()
 			while (0)
 			{
 				write (9);
-					left;
+				left;
 			}
 			
 			if not (_)
-			{
-								
-				if (1)
+			{								
+				switch()
 				{
-					write (0);
-				}
-				else
-				if (2)
-				{
-					write (1);
-				}
-				else
-				if (3)
-				{
-					write (2);
-				}
-				else
-				if (4)
-				{
-					write (3);
-				}
-				else
-				if (5)
-				{
-					write (4);
-				}
-				else
-				if (6)
-				{
-					write (5);
-				}
-				else
-				if (7)
-				{
-					write (6);
-				}
-				else
-				if (8)
-				{
-					write (7);
-				}
-				else
-				if (9)
-				{
-					write (8);
+					case(1):
+						write (0);
+					case(2):
+						write (1);
+					case(3):
+						write (2);
+					case(4):
+						write (3);
+					case(5):
+						write (4);
+					case(6):
+						write (5);
+					case(7):
+						write (6);
+					case(8):
+						write (7);
+					case(9):
+						write (8);
+					
 				}
 				
-				left;
-				
-							
+				left;							
 			}
 			else
 			{
@@ -92,49 +69,31 @@ main()
 		}
 		else
 		if (1)
-		{
 			write (0);
-		}
 		else
 		if (2)
-		{
 			write (1);
-		}
 		else
 		if (3)
-		{
 			write (2);
-		}
 		else
 		if (4)
-		{
 			write (3);
-		}
 		else
 		if (5)
-		{
 			write (4);
-		}
 		else
 		if (6)
-		{
 			write (5);
-		}
 		else
 		if (7)
-		{
 			write (6);
-		}
 		else
 		if (8)
-		{
 			write (7);
-		}
 		else
 		if (9)
-		{
 			write (8);
-		}
 		
 		while not (*)
 			right;
@@ -144,8 +103,8 @@ main()
 			right;
 		write(1);
 	}
-	/* decimal to unary end*/
 
+	/* decimal to binary end*/
 
 
 	if not(1)
@@ -218,7 +177,6 @@ main()
 			right;
 		
 		right;
-		
 		while (x)
 			right;
 		
@@ -226,7 +184,6 @@ main()
 			write (x);
 		
 		right;
-		
 		if (_)
 		{
 			left;
@@ -235,8 +192,8 @@ main()
 				write(1);
 				left;
 			}
+
 			left;
-			
 			while not ($)
 				left;
 			
@@ -335,12 +292,10 @@ main()
 			error;
 		
 		left;
-		
 		while not (_)
 			left;
 
 		right;
-		
 		while (%)
 			right;
 		
@@ -360,8 +315,7 @@ main()
 					while not (_)
 						right;
 					
-					left;
-					
+					left;		
 					while not (_)
 					{
 						write (_);
@@ -385,7 +339,6 @@ main()
 			right;
 		
 		write (*);
-		
 		while not (_)
 		{	
 			while not ($)

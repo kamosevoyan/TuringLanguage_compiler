@@ -1,8 +1,8 @@
 #include "Nodes.h"
-
+  
 			
 Node::Node(TYPE type):type(type)
-{
+{ 
 			
 }
 		
@@ -45,10 +45,10 @@ FlowControlNode::FlowControlNode(TYPE type):Node(type)
 {
 	
 }
-
+ 
 FlowControlNode::~FlowControlNode()
 {
-
+	
 }
 
 StatementNode::StatementNode(TYPE type):Node(type)
@@ -151,7 +151,41 @@ FunctionNode::FunctionNode(TYPE type) : Node(type)
 	
 }
 
-FunctionCallNode::FunctionCallNode(TYPE type, const std::string& name) : Node(type), name(name)
+FunctionCallNode::FunctionCallNode(TYPE type, const std::string& name) : Node(type), f_name(name)
+{
+	
+}
+
+SwitchNode::SwitchNode(TYPE type) : Node(type)
+{ 
+	
+}
+
+SwitchNode::~SwitchNode()
+{
+	for (int i = 0; i < this->cases.size(); ++i)
+	{
+		delete this->cases[i];
+	}
+}      
+
+
+CaseNode::CaseNode(TYPE type) : Node(type)
+{
+	
+}
+
+CaseNode::~CaseNode()
+{
+	
+}
+
+DefaultNode::DefaultNode(TYPE  type) : Node(type)
+{
+	
+}
+
+DefaultNode::~DefaultNode()
 {
 	
 }

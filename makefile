@@ -1,4 +1,4 @@
-CC = g++
+CC = g++ -g
 TARGET = TuringLanguage
 
 PREF_SRC = ./src/

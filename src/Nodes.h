@@ -1,12 +1,19 @@
 #ifndef NODESINCLUDE
-#define NODESINCLUDE
+#define NODESINCLUDE 
 
-#include <vector>
+#include <vector>  
 #include <string>
 #include <iostream>
+#include <map>
 
-enum class TYPE {MAIN, REPEAT_UNTIL, DO_WHILE, BLOCK, IF, IFNOT, IF_ELSE, 
-								WHILE, LEFT, RIGHT, WRITE, EXIT, ERROR, CONTINUE, BREAK, SYMBOL_LIST, FUNCTION, FUNCTION_CALL};
+
+enum class 
+TYPE 
+{	
+			MAIN, BLOCK, WHILE, DO_WHILE, REPEAT_UNTIL, IF, IF_ELSE, WRITE, 
+			LEFT, RIGHT, EXIT, ERROR, CONTINUE, BREAK, SYMBOL_LIST, FUNCTION, FUNCTION_CALL,
+			SWITCH, CASE, DEFAULT
+};
 
 class Node
 {
@@ -204,7 +211,7 @@ class FunctionNode : public Node
 private:
 
 	Node* statements;
-	std::string name;
+	std::string f_name;
 	int entry_state;
 	
 public:
@@ -223,7 +230,7 @@ class FunctionCallNode : public Node
 
 private:    
 
-    std::string name;
+    std::string f_name;
 
 public:
 
@@ -247,5 +254,62 @@ public:
     MainNode(TYPE);
     virtual ~MainNode();							
 };
+
+
+class CaseNode : public Node
+{
+    friend class Parser;
+    friend class Compiler;
+    friend void print(Node*, int);	
+
+private:
+
+    char symbol;
+	Node* statements;
+	size_t entry_state;
+     
+public:
+    
+    CaseNode(TYPE);
+    virtual ~CaseNode();
+};	
+
+class DefaultNode : public Node
+{
+    friend class Parser;
+    friend class Compiler;
+    friend void print(Node*, int);	
+
+private:
+
+	Node* statements;
+    size_t entry_state;
+	
+public:
+    
+    DefaultNode(TYPE);
+    virtual ~DefaultNode();
+};	
+
+class SwitchNode : public Node
+{
+	friend class Parser;
+    friend class Compiler;
+    friend void print(Node*, int);	 
+ 
+private:
+
+	std::vector<Node*> cases;
+	std::map<char, Node*> branches;
+	Node* default_node = nullptr;
+	bool has_default = false; 
+		
+public:	
+
+	SwitchNode(TYPE);
+	virtual ~SwitchNode();
+};
+
+
 
 #endif
