@@ -66,6 +66,9 @@ In contrast of **while statement**, the statements are eqequted at least once.
 * repeat_until statement <br/>
 The statements of **repeat_until statement** are executed until the symbol in the current cell of the tape is available in symbol list.
 
+* switch statement <br/>
+Similar of common languages (C, C++, etc.) switch-case statement.
+
 * write statement <br/>
 Writes the symbol in the currect cell of the tape.
 
