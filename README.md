@@ -1,4 +1,4 @@
-# In this project compiler for language for Turing machine simulator is realised.
+# Compiler for language for Turing machine simulator.
 
 ### The syntax of the language:
 
